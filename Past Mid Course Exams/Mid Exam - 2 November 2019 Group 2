@@ -1,0 +1,96 @@
+1.needed_experience=int(input())
+battles_count=int(input())
+counter=0
+experience=0
+
+for i in range(battles_count):
+    experience_per_battle=int(input())
+    counter+=1
+    experience+=experience_per_battle
+    if counter%3==0:
+        experience=experience+experience_per_battle*0.15
+    elif counter%5==0:
+        experience=experience-experience_per_battle*0.1
+    if experience>=needed_experience:
+        break
+
+
+if experience>=needed_experience:
+    print(f'Player successfully collected his needed experience for {counter} battles.')
+else:
+    print(f'Player was not able to collect the needed experience, {needed_experience-experience:.2f} more needed.')
+    
+    
+2.
+names=[i for i in input().split(', ')]
+command=input()
+block_count=0
+lost_count=0
+
+while command!='Report':
+    command_list=[i for i in command.split(' ')]
+    action=command_list[0]
+    if action=='Blacklist':
+        if command_list[1] in names:
+            names[names.index(command_list[1])]='Blacklisted'
+            print(f'{command_list[1]} was blacklisted.')
+            block_count+=1
+        else:
+            print(f'{command_list[1]} was not found.')
+    elif action=='Error':
+        if names[int(command_list[1])]!='Blacklisted' and names[int(command_list[1])]!='Lost':
+            print(f'{names[int(command_list[1])]} was lost due to an error.')
+            names[int(command_list[1])] = 'Lost'
+            lost_count+=1
+    elif action=='Change':
+        if 0<=int(command_list[1])<len(names):
+            print(f'{names[int(command_list[1])]} changed his username to {command_list[2]}.')
+            names[int(command_list[1])]=command_list[2]
+    command=input()
+
+
+if command=='Report':
+    print(f'Blacklisted names: {block_count}')
+    print(f'Lost names: {lost_count}')
+    print(' '.join(names))
+    
+    
+    
+ 3.
+ owned_tanks=[i for i in input().split(', ')]
+count=int(input())
+
+for i in range(count):
+    command=[i for i in input().split(', ')]
+    action=command[0]
+    if action=='Add':
+        if command[1] in owned_tanks:
+            print('Tank is already bought')
+        else:
+            print(f'Tank successfully bought')
+            owned_tanks.append(command[1])
+    elif action=='Remove':
+        if command[1] in owned_tanks:
+            print(f'Tank successfully sold')
+            owned_tanks.remove(command[1])
+        else:
+            print('Tank not found')
+    elif action=='Remove At':
+        if 0<=int(command[1])<len(owned_tanks):
+            print(f'Tank successfully sold')
+            owned_tanks.pop(int(command[1]))
+        else:
+            print(f'Index out of range')
+            continue
+    elif action=='Insert':
+        if 0 <= int(command[1]) < len(owned_tanks):
+            if command[2] in owned_tanks:
+                print(f'Tank is already bought')
+            else:
+                print(f'Tank successfully bought')
+                owned_tanks.insert(int(command[1]),command[2])
+        else:
+            print(f'Index out of range')
+            continue
+
+print(', '.join(owned_tanks))

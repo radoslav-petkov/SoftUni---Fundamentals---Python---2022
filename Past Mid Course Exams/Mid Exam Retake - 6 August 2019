@@ -1,0 +1,111 @@
+1.
+days=int(input())
+daily_plunder=int(input())
+expected_plunder=float(input())
+sums=0
+
+for i in range(1,days+1):
+    plunder=daily_plunder
+    sums+=plunder
+    if i % 3==0:
+        sums+=plunder*0.5
+    if i % 5==0:
+        sums*=0.7
+
+
+if sums < expected_plunder:
+    print(f'Collected only {sums/expected_plunder*100:.2f}% of the plunder.')
+elif sums >= expected_plunder:
+    print(f'Ahoy! {sums:.2f} plunder gained.')
+    
+    
+    
+2.
+list=[i for i in input().split('|')]
+command=input()
+stolen_items=''
+
+while command != 'Yohoho!':
+    command_list=command.split(' ')
+    action=command_list[0]
+    if action=='Loot':
+        command_list=command_list[1:]
+        for element in command_list:
+            if element in list:
+                continue
+            else:
+                list.insert(0,element)
+    elif action=='Drop':
+        if 0 <= int(command_list[1]) < len(list):
+            new_element=list[int(command_list[1])]
+            list.pop(int(command_list[1]))
+            list.append(new_element)
+    elif action=='Steal':
+        if int(command_list[1])<len(list):
+            stolen_items=list[(len(list)-int(command_list[1])):]
+            print(', '.join(stolen_items))
+            list=list[:(len(list)-int(command_list[1]))]
+        else:
+            print(', '.join(list))
+            list=[]
+    command=input()
+
+
+
+if len(list)>0:
+    sums = 0
+    for element in list:
+        sums += len(element)
+
+    average_gain = sums / len(list)
+
+    print(f'Average treasure gain: {average_gain:.2f} pirate credits.')
+else:
+    print(f'Failed treasure hunt.')
+    
+    
+ 3.
+ pirateship_status=[int(i) for i in input().split('>')]
+warship_status=[int(i) for i in input().split('>')]
+max_health=int(input())
+command=input()
+pirate_count=0
+not_sunked=True
+
+
+
+while command!='Retire' and not_sunked:
+    command_list=command.split()
+    action=command_list[0]
+    if action=='Fire':
+        if 0<=int(command_list[1])<len(warship_status):
+            warship_status[int(command_list[1])]=warship_status[int(command_list[1])]-int(command_list[2])
+            if warship_status[int(command_list[1])] <=0:
+                print(f'You won! The enemy ship has sunken.')
+                not_sunked=False
+                break
+    elif action=='Defend':
+        if 0<=int(command_list[1])<len(pirateship_status) and 0<=int(command_list[2])<len(pirateship_status):
+            for index,element in enumerate(pirateship_status[int(command_list[1]):(int(command_list[2])+1)]):
+                pirateship_status[index]-=int(command_list[3])
+                if pirateship_status[index]<=0:
+                    print(f'You lost! The pirate ship has sunken.')
+                    not_sunked=False
+                    break
+    elif action=='Repair':
+        if 0<=int(command_list[1])<len(pirateship_status):
+            if pirateship_status[int(command_list[1])]+int(command_list[2]) < max_health:
+                pirateship_status[int(command_list[1])]+=int(command_list[2])
+            else:
+                pirateship_status[int(command_list[1])]=max_health
+    elif action=='Status':
+        for element in pirateship_status:
+            if element<max_health*0.2:
+                pirate_count+=1
+        print(f'{pirate_count} sections need repair.')
+    command=input()
+
+
+if not_sunked:
+    print(f'Pirate ship status: {sum(pirateship_status)}')
+    print(f'Warship status: {sum(warship_status)}')

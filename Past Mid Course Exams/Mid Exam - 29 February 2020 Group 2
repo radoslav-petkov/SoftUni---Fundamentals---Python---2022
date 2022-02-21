@@ -1,0 +1,79 @@
+1.
+efficently_1=int(input())
+efficently_2=int(input())
+efficently_3=int(input())
+people_count=int(input())
+hour=0
+
+total_efficently=efficently_1+efficently_2+efficently_3
+
+while people_count >0:
+    people_count-=total_efficently
+    hour+=1
+    if hour%4==0:
+        hour+=1
+
+print(f'Time needed: {hour}h.')
+
+
+2.
+groceries=input().split('!')
+command=input()
+
+while command!='Go Shopping!':
+    command_list=command.split()
+    action=command_list[0]
+    grocery=command_list[1]
+    if action=='Urgent':
+        if grocery not in groceries:
+            groceries.insert(0,grocery)
+    elif action=='Unnecessary':
+        if grocery in groceries:
+            groceries.remove(grocery)
+    elif action=='Correct':
+       old_grocery=command_list[1]
+       new_grocery=command_list[2]
+       if old_grocery in groceries:
+            groceries[groceries.index(old_grocery)]=new_grocery
+    elif action=='Rearrange':
+        if grocery in groceries:
+            groceries.remove(grocery)
+            groceries.append(grocery)
+    command=input()
+
+
+if command=='Go Shopping!':
+    print(', '.join(groceries))
+    
+    
+    
+3.
+neighborhood=[int(i) for i in input().split('@')]
+command=input()
+position=0
+ziros_position=[]
+valentins_count=0
+
+while command!='Love!':
+    command_list=command.split()
+    length=int(command_list[1])
+    position+=length
+    if position > len(neighborhood)-1:
+        position=0
+    if position in ziros_position:
+        print(f"Place {position} already had Valentine's day.")
+    if position not in ziros_position:
+        neighborhood[position]-=2
+        if neighborhood[position]==0:
+            print(f"Place {position} has Valentine's day.")
+            valentins_count+=1
+            ziros_position.append(position)
+    command = input()
+
+
+
+print(f"Cupid's last position was {position}.")
+if valentins_count==len(neighborhood):
+    print(f'Mission was successful.')
+else:
+    print(f'Cupid has failed {len(neighborhood)-valentins_count} places.')

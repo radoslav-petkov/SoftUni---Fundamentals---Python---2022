@@ -1,0 +1,89 @@
+1.
+count_students=int(input())
+count_lectures=int(input())
+initial_bonus=int(input())
+total_bonus_max=-9999999
+current_attendance=0
+from math import ceil
+
+for i in range(count_students):
+    attendance=int(input())
+    total_bonus=ceil(attendance / count_lectures* (5 + initial_bonus))
+    if total_bonus >= total_bonus_max:
+        total_bonus_max=total_bonus
+        current_attendance=attendance
+
+
+print(f'Max Bonus: {total_bonus_max}.')
+print(f'The student has attended {current_attendance} lectures.')
+
+
+2.
+initial_health=100
+bitcoins=0
+list=[i for i in input().split('|')]
+health=initial_health
+count_room=0
+dead=False
+
+for element in list:
+    room=element.split()
+    command=room[0]
+    number=int(room[1])
+    count_room+=1
+    if command=='potion':
+        if health + number < initial_health:
+            health+=number
+        else:
+            number=initial_health-health
+            health=initial_health
+        print(f'You healed for {number} hp.')
+        print(f'Current health: {health} hp.')
+    elif command=='chest':
+        bitcoins+=number
+        print(f'You found {number} bitcoins.')
+    else:
+        health-=number
+        if health<=0:
+            print(f'You died! Killed by {command}.')
+            print(f'Best room: {count_room}')
+            dead=True
+            break
+        else:
+            print(f'You slayed {command}.')
+
+
+if not dead:
+    print(f"You've made it!\nBitcoins: {bitcoins}\nHealth: {health}")
+    
+    
+    
+ 3.
+ items=input().split(', ')
+command=input()
+
+while command!='Craft!':
+    command_list=command.split(' - ')
+    action=command_list[0]
+    item=command_list[1]
+    if action=='Collect':
+        if item not in items:
+            items.append(item)
+    elif action=='Drop':
+        if item in items:
+            items.remove(item)
+    elif action=='Combine Items':
+        item_parts=item.split(':')
+        old_item=item_parts[0]
+        new_item=item_parts[1]
+        if old_item in items:
+            items.insert((items.index(old_item)+1),new_item)
+    elif action=='Renew':
+        if item in items:
+            items.remove(item)
+            items.append(item)
+    command=input()
+
+
+if command=='Craft!':
+    print(', '.join(items))
